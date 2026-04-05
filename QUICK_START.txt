@@ -1,0 +1,4 @@
+1) Открой apps\desktop\.env и проверь домен astraboost.ru
+2) Запусти 1_install_dependencies.bat
+3) Запусти 2_run_desktop.bat
+4) Для сборки .exe запусти 3_build_windows_exe.bat
