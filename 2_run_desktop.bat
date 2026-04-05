@@ -1,5 +1,9 @@
 @echo off
 cd /d "%~dp0"
-echo Starting Astra Desktop...
+echo ========================================
+echo   Astra Desktop — Запуск
+echo ========================================
+echo.
+echo [*] Запускаю Astra Desktop...
 call pnpm dev:desktop
 pause

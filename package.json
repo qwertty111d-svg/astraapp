@@ -1,7 +1,7 @@
 {
   "name": "astra-desktop-linked",
   "private": true,
-  "version": "0.1.0",
+  "version": "2.4.0",
   "packageManager": "pnpm@10.4.1",
   "scripts": {
     "dev:desktop": "pnpm --filter @astra/desktop dev",

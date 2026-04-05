@@ -1,11 +1,358 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Astra Desktop</title>
-  </head>
-  <body class="bg-astrabg">
-    <div id="root"></div>
-    <script type="module" src="./main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src https://astraboost.ru" />
+  <title>Astra</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- TITLEBAR -->
+  <header class="titlebar" id="titlebar">
+    <div class="titlebar-drag">
+      <div class="titlebar-logo">
+        <svg viewBox="0 0 32 32" fill="none" width="18" height="18">
+          <defs><linearGradient id="tl" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#7c3aed"/>
+          </linearGradient></defs>
+          <path d="M16 2 L18.5 12.5 L30 16 L18.5 19.5 L16 30 L13.5 19.5 L2 16 L13.5 12.5 Z" fill="url(#tl)"/>
+          <circle cx="16" cy="16" r="2" fill="#fff" opacity="0.9"/>
+        </svg>
+        <span>Astra</span>
+        <span class="version-badge">v2.4</span>
+      </div>
+    </div>
+    <div class="titlebar-controls">
+      <button class="tb-btn tb-minimize" onclick="window.astra.minimize()" title="Свернуть">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect y="5" width="12" height="1.5" rx="0.5" fill="currentColor"/></svg>
+      </button>
+      <button class="tb-btn tb-maximize" onclick="window.astra.maximize()" title="Развернуть">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="10" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      </button>
+      <button class="tb-btn tb-close" onclick="window.astra.close()" title="Закрыть">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- LOGIN SCREEN -->
+  <div class="screen screen-login active" id="screen-login">
+    <div class="login-bg">
+      <div class="login-orb login-orb-1"></div>
+      <div class="login-orb login-orb-2"></div>
+    </div>
+    <div class="login-card">
+      <div class="login-logo">
+        <svg viewBox="0 0 48 48" fill="none" width="64" height="64">
+          <defs>
+            <linearGradient id="lg1" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+          <circle cx="24" cy="24" r="22" stroke="url(#lg1)" stroke-width="1" opacity="0.2"/>
+          <path d="M24 4 L27 19 L44 24 L27 29 L24 44 L21 29 L4 24 L21 19 Z" fill="url(#lg1)"/>
+          <circle cx="24" cy="24" r="2.5" fill="#fff" opacity="0.9"/>
+        </svg>
+      </div>
+      <h1 class="login-title">Добро пожаловать</h1>
+      <p class="login-subtitle">Войдите в аккаунт Astra</p>
+
+      <div class="login-form">
+        <div class="input-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="user@example.com" autocomplete="email" />
+        </div>
+        <div class="input-group">
+          <label for="login-password">Пароль</label>
+          <input type="password" id="login-password" placeholder="Пароль" autocomplete="current-password" />
+        </div>
+        <div class="login-error" id="login-error"></div>
+        <button class="btn-primary btn-login" id="btn-login">
+          <span class="btn-text">Войти</span>
+          <span class="btn-loader" hidden></span>
+        </button>
+      </div>
+
+      <div class="login-footer">
+        <span>Нет аккаунта?</span>
+        <a href="#" id="link-register">Создать на сайте</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP SCREEN -->
+  <div class="screen screen-app" id="screen-app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="dashboard">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          <span>Панель</span>
+        </button>
+        <button class="nav-item" data-tab="optimize">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span>Оптимизация</span>
+        </button>
+        <button class="nav-item" data-tab="gaming">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 12h4m-2-2v4"/><circle cx="17" cy="11" r="1"/><circle cx="15" cy="14" r="1"/><path d="M2 10a4 4 0 014-4h12a4 4 0 014 4v1a7 7 0 01-7 7h-6a7 7 0 01-7-7v-1z"/></svg>
+          <span>Игровой режим</span>
+        </button>
+        <button class="nav-item nav-item-pro" data-tab="pro" id="nav-pro">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Pro</span>
+          <span class="pro-badge">PRO</span>
+        </button>
+        <button class="nav-item" data-tab="monitor">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Мониторинг</span>
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Настройки</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-user" id="sidebar-user">
+        <div class="user-avatar" id="user-avatar">A</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">—</div>
+          <div class="user-plan" id="user-plan">Free</div>
+        </div>
+        <button class="btn-logout" id="btn-logout" title="Выйти">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- DASHBOARD -->
+      <section class="tab-panel active" data-panel="dashboard">
+        <div class="panel-header">
+          <div>
+            <h2>Панель управления</h2>
+            <p class="panel-subtitle">Обзор состояния системы</p>
+          </div>
+          <div class="connection-status" id="connection-status">
+            <span class="status-dot"></span>
+            <span>Подключено</span>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="stat-card stat-card-accent">
+            <div class="stat-icon">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+            </div>
+            <div class="stat-label">CPU</div>
+            <div class="stat-value" id="stat-cpu">—</div>
+            <div class="stat-bar"><div class="stat-bar-fill" id="bar-cpu" style="width:0%"></div></div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div class="stat-label">RAM</div>
+            <div class="stat-value" id="stat-ram">—</div>
+            <div class="stat-bar"><div class="stat-bar-fill" id="bar-ram" style="width:0%"></div></div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="stat-label">Аптайм</div>
+            <div class="stat-value" id="stat-uptime">—</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="stat-label">Оптимизации</div>
+            <div class="stat-value" id="stat-tweaks">0 / 12</div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <h3>Быстрые действия</h3>
+          <div class="quick-grid">
+            <button class="quick-btn" id="quick-optimize">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              <span>Быстрая оптимизация</span>
+            </button>
+            <button class="quick-btn" id="quick-clean-ram">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+              <span>Очистка RAM</span>
+            </button>
+            <button class="quick-btn" id="quick-game-mode">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 12h4m-2-2v4"/><circle cx="17" cy="11" r="1"/><path d="M2 10a4 4 0 014-4h12a4 4 0 014 4v1a7 7 0 01-7 7h-6a7 7 0 01-7-7v-1z"/></svg>
+              <span>Игровой режим</span>
+            </button>
+            <button class="quick-btn quick-btn-revert" id="quick-revert">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              <span>Откатить всё</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- OPTIMIZE -->
+      <section class="tab-panel" data-panel="optimize">
+        <div class="panel-header">
+          <div>
+            <h2>Оптимизация системы</h2>
+            <p class="panel-subtitle">Выберите твики для применения</p>
+          </div>
+        </div>
+        <div class="tweaks-list" id="tweaks-list"></div>
+      </section>
+
+      <!-- GAMING -->
+      <section class="tab-panel" data-panel="gaming">
+        <div class="panel-header">
+          <div>
+            <h2>Игровой режим</h2>
+            <p class="panel-subtitle">Максимальная производительность для игр</p>
+          </div>
+        </div>
+        <div class="game-mode-card">
+          <div class="game-mode-visual">
+            <div class="gm-ring" id="gm-ring">
+              <svg viewBox="0 0 120 120" width="120" height="120">
+                <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+                <circle cx="60" cy="60" r="54" fill="none" stroke="url(#gmg)" stroke-width="6" stroke-linecap="round"
+                  stroke-dasharray="339.3" stroke-dashoffset="339.3" id="gm-progress" transform="rotate(-90 60 60)"/>
+                <defs><linearGradient id="gmg" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#a78bfa"/><stop offset="1" stop-color="#22c55e"/>
+                </linearGradient></defs>
+              </svg>
+              <div class="gm-icon" id="gm-icon">
+                <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 12h4m-2-2v4"/><circle cx="17" cy="11" r="1"/><circle cx="15" cy="14" r="1"/><path d="M2 10a4 4 0 014-4h12a4 4 0 014 4v1a7 7 0 01-7 7h-6a7 7 0 01-7-7v-1z"/></svg>
+              </div>
+            </div>
+            <h3 id="gm-status-text">Игровой режим выключен</h3>
+            <p class="gm-desc">Отключает фоновые процессы, повышает приоритет GPU и CPU для игр</p>
+          </div>
+          <button class="btn-game-toggle" id="btn-game-toggle">Активировать</button>
+          <div class="gm-features">
+            <div class="gm-feat"><span class="gm-feat-icon">⚡</span><span>Приоритет GPU</span></div>
+            <div class="gm-feat"><span class="gm-feat-icon">🧹</span><span>Очистка RAM</span></div>
+            <div class="gm-feat"><span class="gm-feat-icon">🔇</span><span>Отключение фона</span></div>
+            <div class="gm-feat"><span class="gm-feat-icon">📈</span><span>FPS Boost</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRO -->
+      <section class="tab-panel" data-panel="pro">
+        <div class="panel-header">
+          <div>
+            <h2>Pro функции</h2>
+            <p class="panel-subtitle">Расширенные возможности оптимизации</p>
+          </div>
+          <div class="pro-status" id="pro-status">
+            <span class="pro-status-dot"></span>
+            <span id="pro-status-text">Не активен</span>
+          </div>
+        </div>
+
+        <!-- PRO locked overlay -->
+        <div class="pro-locked" id="pro-locked">
+          <div class="pro-locked-card">
+            <svg viewBox="0 0 48 48" fill="none" width="56" height="56">
+              <defs><linearGradient id="plg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#7c3aed"/>
+              </linearGradient></defs>
+              <path d="M24 4 L27 19 L44 24 L27 29 L24 44 L21 29 L4 24 L21 19 Z" fill="url(#plg)"/>
+              <circle cx="24" cy="24" r="2.5" fill="#fff" opacity="0.9"/>
+            </svg>
+            <h3>Требуется Pro или Lifetime</h3>
+            <p>Получите доступ к продвинутым оптимизациям, FPS Boost, игровому оверлею и приоритетной поддержке.</p>
+            <button class="btn-primary btn-upgrade" id="btn-upgrade">Перейти на Pro — 599₽/мес</button>
+          </div>
+        </div>
+
+        <!-- PRO content (hidden if no Pro) -->
+        <div class="pro-content" id="pro-content" style="display:none">
+          <div class="pro-tweaks-grid" id="pro-tweaks"></div>
+        </div>
+      </section>
+
+      <!-- MONITOR -->
+      <section class="tab-panel" data-panel="monitor">
+        <div class="panel-header">
+          <div>
+            <h2>Мониторинг системы</h2>
+            <p class="panel-subtitle">Информация о вашем оборудовании</p>
+          </div>
+        </div>
+        <div class="sys-info-grid" id="sys-info-grid"></div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="tab-panel" data-panel="settings">
+        <div class="panel-header">
+          <div>
+            <h2>Настройки</h2>
+            <p class="panel-subtitle">Параметры приложения</p>
+          </div>
+        </div>
+        <div class="settings-list">
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-title">Сворачивать в трей</div>
+              <div class="setting-desc">Приложение продолжит работать в фоне при закрытии окна</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="setting-tray" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-title">Автозапуск</div>
+              <div class="setting-desc">Запускать Astra при включении компьютера</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="setting-autostart" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-title">Тарифы и подписка</div>
+              <div class="setting-desc">Управление тарифом на сайте Astra</div>
+            </div>
+            <button class="btn-secondary-sm" id="btn-open-pricing">Открыть</button>
+          </div>
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-title">Поддержка</div>
+              <div class="setting-desc">Связаться с командой Astra</div>
+            </div>
+            <button class="btn-secondary-sm" id="btn-open-support">Открыть</button>
+          </div>
+          <div class="setting-item setting-item-danger">
+            <div class="setting-info">
+              <div class="setting-title">Откатить все оптимизации</div>
+              <div class="setting-desc">Вернуть систему к исходному состоянию</div>
+            </div>
+            <button class="btn-danger-sm" id="btn-revert-all">Откатить</button>
+          </div>
+        </div>
+        <div class="app-info">
+          <span>Astra Desktop v2.4.0</span>
+          <span>•</span>
+          <a href="#" id="link-site">astraboost.ru</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
 </html>

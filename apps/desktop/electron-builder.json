@@ -1,0 +1,42 @@
+{
+  "appId": "ru.astraboost.desktop",
+  "productName": "Astra",
+  "copyright": "© 2026 Astra",
+  "directories": {
+    "output": "dist",
+    "buildResources": "build"
+  },
+  "files": [
+    "src/**/*",
+    "assets/**/*",
+    "node_modules/**/*",
+    "package.json"
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "build/icon.ico",
+    "artifactName": "AstraSetup.exe"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "build/icon.ico",
+    "uninstallerIcon": "build/icon.ico",
+    "installerHeaderIcon": "build/icon.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Astra",
+    "artifactName": "AstraSetup.exe"
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "qwertty111d-svg",
+    "repo": "astraapp"
+  }
+}
